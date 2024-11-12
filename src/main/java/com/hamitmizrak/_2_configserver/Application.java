@@ -2,7 +2,10 @@ package com.hamitmizrak._2_configserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
+// Config Server Enable
+@EnableConfigServer
 @SpringBootApplication
 public class Application {
 
