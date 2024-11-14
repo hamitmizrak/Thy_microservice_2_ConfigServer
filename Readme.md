@@ -3,9 +3,16 @@
 
 ---
 
+| Spring Boot Sürümü | Spring Cloud Sürümü (Release Train) |
+|--------------------|------------------------------------|
+| 2.4.x              | 2020.0.x (Kod adı: Ilford)         |
+| 2.5.x - 2.7.x      | 2021.x (Kod adı: Jubilee)          |
+| 3.0.x - 3.2.x      | 2022.x (Kod adı: Kilburn)          |
+| 3.3.x ve sonrası   | 2023.x ve sonrası                  |
+
 ## Config Server (End point)
 ```sh 
-
+Dikkat: 
 ```
 ---
 
@@ -176,3 +183,115 @@ Bu yapılandırma dosyaları, her bir mikroservis için farklı bir veritabanı 
 ---
 
 Bu detaylı açıklama, Config Server yapılandırmasının nasıl düzenlendiğini ve nasıl işlediğini anlamak için kapsamlı bir bakış sunmaktadır.
+
+    <!-- dependencyManagement, bağımlılıkların sürüm yönetimini sağlar.
+         Burada tanımlanan sürümler, alt bağımlılıklar tarafından otomatik olarak kullanılır. -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Cloud bağımlılıklarının merkezi bir yerden yönetilmesi için toplu POM bağımlılığı -->
+            <dependency>
+                <!-- Spring Cloud bağımlılıkları için grup kimliğini tanımlar -->
+                <groupId>org.springframework.cloud</groupId>
+                
+                <!-- Spring Cloud bağımlılıklarının tanımlandığı toplu POM dosyasını belirtir -->
+                <artifactId>spring-cloud-dependencies</artifactId>
+                
+                <!-- Spring Cloud sürümünü belirtir; uyumlu bir versiyon seçilmelidir.
+                     Bu örnekte "2023.0.3" sürümü kullanılıyor. -->
+                <version>2023.0.3</version> <!-- Versiyonun uyumlu olduğundan emin olun -->
+                
+                <!-- Bu bağımlılığın bir POM dosyası olarak kullanılacağını belirtir.
+                     POM türünde olduğundan sadece bağımlılık sürüm yönetimi sağlar. -->
+                <type>pom</type>
+                
+                <!-- Bu bağımlılığı import olarak tanımlar, böylece Spring Cloud bağımlılıkları
+                     proje genelinde merkezi bir sürüm yönetiminden faydalanır. -->
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Plugins kısmı, Maven yapısında derleme ve çalıştırma için gerekli eklentileri tanımlar. -->
+    <build>
+        <plugins>
+            <!-- Maven Compiler Plugin, Java kaynak kodunun hedef sürümde derlenmesini sağlar.
+                 Java 17 kullanımı için kaynak ve hedef sürüm ayarlanmıştır. -->
+            <plugin>
+                <!-- Apache Maven Compiler Plugin'in grup kimliğini tanımlar -->
+                <groupId>org.apache.maven.plugins</groupId>
+                
+                <!-- Maven Compiler Plugin'in kimliğini belirtir -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                
+                <!-- Plugin'in versiyonunu belirtir. Burada "3.5.1" versiyonu kullanılıyor -->
+                <version>3.5.1</version>
+                
+                <!-- Bu kısım, Maven Compiler Plugin'in konfigürasyonunu içerir -->
+                <configuration>
+                    <!-- Kaynak kodun derlenmesi için kullanılan Java sürümü; Java 17 olarak belirlenmiştir -->
+                    <source>17</source>
+                    <!-- Derlenmiş kodun hedef sürümü; Java 17 olarak ayarlanmıştır -->
+                    <target>17</target>
+                </configuration>
+            </plugin>
+            
+            <!-- Spring Boot Maven Plugin, Spring Boot uygulamalarını paketlemek ve çalıştırmak için kullanılır. -->
+            <plugin>
+                <!-- Spring Boot Maven Plugin'in grup kimliğini belirtir -->
+                <groupId>org.springframework.boot</groupId>
+                
+                <!-- Spring Boot Maven Plugin'in kimliğini belirtir -->
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+# Config Server uygulamasının çalışacağı portu tanımlar.
+server:
+port: 8888  # Config Server için kullanılan özel port numarası
+
+spring:
+cloud:
+config:
+server:
+git:
+# Yapılandırma dosyalarını alacağı Git deposunun URL'sini belirler.
+uri: https://github.com/hamitmizrak/config-repo  # Git deposunun adresi
+
+          # Config Server'in hangi Git dalını (branch) varsayılan olarak kullanacağını belirler.
+          default-label: master  # Varsayılan Git dalı "master" olarak ayarlanmış
+
+# Uygulamanın adını tanımlar. Bu isim, Config Server'ı temsil eder.
+application:
+name: config-server  # Uygulama adı "config-server" olarak tanımlanmış
+
+
+// Bu sınıf, Spring Boot ve Spring Cloud Config Server yapılandırmasını içeren ana uygulama sınıfıdır.
+package com.hamitmizrak._2_configserver;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.config.server.EnableConfigServer;
+
+// Spring Boot uygulaması olarak işaretlemek için kullanılır,
+// bileşen taraması ve otomatik yapılandırma sağlar.
+@SpringBootApplication
+
+// Bu anotasyon, sınıfı bir Config Server olarak tanımlar.
+// Config Server, merkezi bir yapılandırma yönetimi sunar ve konfigürasyonları dışarıya sağlar.
+@EnableConfigServer
+
+public class Application {
+
+    // Uygulamanın ana (main) metodu, Spring Boot uygulamasının başlangıç noktasıdır.
+    public static void main(String[] args) {
+        // SpringApplication.run, Spring uygulamasını başlatır ve Spring konteynırını oluşturur.
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+
+
+

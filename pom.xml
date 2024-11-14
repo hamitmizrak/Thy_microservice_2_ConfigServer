@@ -3,6 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--
+      | Spring Boot Sürümü | Spring Cloud Sürümü (Release Train)
+      | ++++++++++++++++++ | +++++++++++++++++++++++++++++++++++++++++
+      | 2.4.x              | 2020.0.x (Kod adı: Ilford)
+      | 2.5.x - 2.7.x      | 2021.x (Kod adı: Jubilee)
+      | 3.0.x - 3.2.x      | 2022.x (Kod adı: Kilburn)
+      | 3.3.x ve sonrası   | 2023.x ve sonrası
+   -->
+
     <!--parent-->
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -17,18 +26,27 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>_2_ConfigServer</name>
     <description>_2_ConfigServer</description>
-    <url/>
+
+    <url>https://github.com/hamitmizrak/THY_1_EurekaServer.git</url>
     <licenses>
-        <license/>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
     </licenses>
     <developers>
-        <developer/>
+        <developer>
+            <id>hamitmizrak</id>
+            <name>Hamit Mızrak</name>
+            <email>hamitmizrak@gmail.com</email>
+        </developer>
     </developers>
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection>scm:git:https://github.com/hamitmizrak/THY_1_EurekaServer.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/hamitmizrak/THY_1_EurekaServer.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/hamitmizrak/THY_1_EurekaServer.git</url>
     </scm>
 
     <!--
@@ -54,7 +72,7 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <!--Spring Cloud Config Server-->
-        <!--<spring-cloud.version>2023.0.3</spring-cloud.version>-->
+       <spring-cloud.version>2023.0.3</spring-cloud.version>
     </properties>
 
     <!--  dependencies -->
@@ -87,39 +105,65 @@
     </dependencies>
 
     <!--dependencyManagement-->
+    <!-- dependencyManagement, bağımlılıkların sürüm yönetimini sağlar.
+         Burada tanımlanan sürümler, alt bağımlılıklar tarafından otomatik olarak kullanılır. -->
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Cloud bağımlılıklarının merkezi bir yerden yönetilmesi için toplu POM bağımlılığı -->
             <dependency>
+                <!-- Spring Cloud bağımlılıkları için grup kimliğini tanımlar -->
                 <groupId>org.springframework.cloud</groupId>
+
+                <!-- Spring Cloud bağımlılıklarının tanımlandığı toplu POM dosyasını belirtir -->
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2023.0.3</version> <!-- Versiyonun uyumlu olduğundan emin olun -->
+
+                <!-- Spring Cloud sürümünü belirtir; uyumlu bir versiyon seçilmelidir.
+                     Bu örnekte "2023.0.3" sürümü kullanılıyor. -->
+                <version>${spring-cloud.version}</version> <!-- Versiyonun uyumlu olduğundan emin olun -->
+
+                <!-- Bu bağımlılığın bir POM dosyası olarak kullanılacağını belirtir.
+                     POM türünde olduğundan sadece bağımlılık sürüm yönetimi sağlar. -->
                 <type>pom</type>
+
+                <!-- Bu bağımlılığı import olarak tanımlar, böylece Spring Cloud bağımlılıkları
+                     proje genelinde merkezi bir sürüm yönetiminden faydalanır. -->
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-
-    <!--Plugins-->
+    <!-- Plugins kısmı, Maven yapısında derleme ve çalıştırma için gerekli eklentileri tanımlar. -->
     <build>
         <plugins>
-            <!-- for maven target 17: SonarQube 11 veya 17 yapmalısınız -->
+            <!-- Maven Compiler Plugin, Java kaynak kodunun hedef sürümde derlenmesini sağlar.
+                 Java 17 kullanımı için kaynak ve hedef sürüm ayarlanmıştır. -->
             <plugin>
+                <!-- Apache Maven Compiler Plugin'in grup kimliğini tanımlar -->
                 <groupId>org.apache.maven.plugins</groupId>
+
+                <!-- Maven Compiler Plugin'in kimliğini belirtir -->
                 <artifactId>maven-compiler-plugin</artifactId>
+
+                <!-- Plugin'in versiyonunu belirtir. Burada "3.5.1" versiyonu kullanılıyor -->
                 <version>3.5.1</version>
+
+                <!-- Bu kısım, Maven Compiler Plugin'in konfigürasyonunu içerir -->
                 <configuration>
+                    <!-- Kaynak kodun derlenmesi için kullanılan Java sürümü; Java 17 olarak belirlenmiştir -->
                     <source>17</source>
+                    <!-- Derlenmiş kodun hedef sürümü; Java 17 olarak ayarlanmıştır -->
                     <target>17</target>
                 </configuration>
             </plugin>
 
-
+            <!-- Spring Boot Maven Plugin, Spring Boot uygulamalarını paketlemek ve çalıştırmak için kullanılır. -->
             <plugin>
+                <!-- Spring Boot Maven Plugin'in grup kimliğini belirtir -->
                 <groupId>org.springframework.boot</groupId>
+
+                <!-- Spring Boot Maven Plugin'in kimliğini belirtir -->
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
-
 </project>

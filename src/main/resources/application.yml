@@ -1,13 +1,36 @@
-# config-server/src/main/resources/application.yml
+# Config Server uygulamasının çalışacağı portu tanımlar.
 server:
-  port: 8888
+  port: 8888  # Config Server için kullanılan özel port numarası
 
+# Spring Cloud
 spring:
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/hamitmizrak/config-repo  # Git reposu URL'si
-          default-label: master
+          # Yapılandırma dosyalarını alacağı Git deposunun URL'sini belirler.
+          uri: https://github.com/hamitmizrak/config-repo  # Git deposunun adresi
+
+          # Config Server'in hangi Git dalını (branch) varsayılan olarak kullanacağını belirler.
+          default-label: master  # Varsayılan Git dalı "master" olarak ayarlanmış
+
+          #refreshRate: 10m  # Yapılandırma yenileme süresi (örn: 10 dakika)
+
+          #Eğer Git reposuna erişim sağlamak için kimlik doğrulama gerekiyors
+          #username: hamitmizrak@gmail.com  # Git kullanıcı adı
+          #password: your-password  # Git şifresi
+
+  # Uygulamanın adını tanımlar. Bu isim, Config Server'ı temsil eder.
   application:
-    name: config-server
+    name: config-server  # Uygulama adı "config-server" olarak tanımlanmış
+
+# Actuator
+management:
+  health:
+    config:
+      enabled: true  # Config Server'ın sağlığını kontrol etmek için
+
+# Logging
+logging:
+  level:
+    org.springframework.cloud.config.server: DEBUG  # Config Server log seviyesini DEBUG yapar
