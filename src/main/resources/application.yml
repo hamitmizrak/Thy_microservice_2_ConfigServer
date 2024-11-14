@@ -1,3 +1,38 @@
+
+# Eureka Service
+# http://localhost:8761
+#http://localhost:8761/eureka/apps
+#http://localhost:8761/eureka/apps/address-service
+#http://localhost:8761/actuator/health
+#
+## Config Service
+## http://localhost:8888
+#http://localhost:8888/actuator/health
+#http://localhost:8888/health/check
+#http://localhost:8888/config-client/default/master
+#
+## Api Gateway Service
+## http://localhost:9999
+#http://localhost:9999/actuator/health
+#
+## Address Service
+## http://localhost:1111
+#http://localhost:1111/actuator/health
+#http://localhost:1111/api/address
+#http://localhost:8888/address-service/default
+#
+## Customer Service
+## http://localhost:2222
+#http://localhost:2222/actuator/health
+#
+## GitHub Addresleri
+#https://github.com/hamitmizrak/THY_1_EurekaServer
+#https://github.com/hamitmizrak/Thy_microservice_2_ConfigServer
+#https://github.com/hamitmizrak/config-repo
+#https://github.com/hamitmizrak/THY_Microservice_4_ApiGateway
+########################################################################
+
+
 # Config Server uygulamasının çalışacağı portu tanımlar.
 server:
   port: 8888  # Config Server için kullanılan özel port numarası
